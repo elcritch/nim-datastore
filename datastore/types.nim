@@ -1,3 +1,5 @@
+import std/streams
+export streams
 
 const
   FileExt* = "dsobj"
@@ -8,3 +10,6 @@ type
   DatastoreKeyNotFound* = object of DatastoreError
 
   Datastore* = ref object of RootObj
+
+type
+  DataStream* = ref object of StringStreamObj
