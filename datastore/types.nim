@@ -41,28 +41,31 @@ proc new*(_: typedesc[DataStream], data: openArray[byte]): DataStream =
   copyMem(addr str[0], unsafeAddr data[0], data.len)
   result = DataStream.new(move str)
 
-proc len*(dss: DataStream): int {.raises: [].} =
+proc len*(dss: DataStream): int {.raises: [], noSideEffect.} =
   try:
-    dss.getPosition()
+    {.cast(noSideEffect).}:
+      dss.getPosition()
   except CatchableError as exc:
     # TODO: temporary check
     raise (ref Defect)(msg: exc.msg)
 
-proc `==`*(a, b: DataStream): bool {.raises: [].} =
+proc `==`*(a, b: DataStream): bool {.raises: [], noSideEffect.} =
   if unsafeAddr(a) == unsafeAddr(b):
     return true
   if a.isNil or b.isNil:
     return false
   if a.len == 0 and b.len == 0:
     return true
-  echo "== a: len: ", a.len, " data: ", a.data.repr
-  echo "== b: len: ", a.len, " data: ", a.data.repr
   let res =  a.len == b.len and a.data == b.data
-  echo "== res: ", res
   return res
 
 template toOpenArray*(dss: DataStream): auto =
-  dss.data.toOpenArray(0, dss.len)
+  cast[ptr UncheckedArray[byte]](unsafeAddr dss.data).toOpenArray(0, dss.len())
+
+proc toSeq*(dss: DataStream): seq[byte] =
+  result = newSeq[byte](dss.len())
+  if dss.len() == 0:
+    copyMem(addr result[0], addr dss.data[0], dss.len)
 
 template toString*(dss: DataStream): string =
   dss.data
