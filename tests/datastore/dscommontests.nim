@@ -7,10 +7,11 @@ import pkg/stew/results
 import pkg/datastore
 
 proc basicStoreTests*(
-  ds: Datastore,
-  key: Key,
-  bytes: seq[byte],
-  otherBytes: seq[byte]) =
+    ds: Datastore,
+    key: Key,
+    bytes: Datastream,
+    otherBytes: Datastream
+) =
 
   test "put":
     (await ds.put(key, bytes)).tryGet()

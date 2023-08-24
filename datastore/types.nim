@@ -12,10 +12,10 @@ type
   Datastore* = ref object of RootObj
 
 type
-  DataStream* = ref object of StringStreamObj ##\
-    ## DataStream type -- currently just a shim around StringStream
+  Datastream* = ref object of StringStreamObj ##\
+    ## Datastream type -- currently just a shim around StringStream
 
-proc new*(x: typedesc[DataStream], data: sink string): DataStream =
+proc new*(x: typedesc[Datastream], data: sink string): Datastream =
   let res = new x
   var ss = newStringStream()
   res.data = data
@@ -32,16 +32,16 @@ proc new*(x: typedesc[DataStream], data: sink string): DataStream =
     result.peekDataImpl = ss.peekDataImpl
     result.writeDataImpl = ss.writeDataImpl
 
-proc new*(_: typedesc[DataStream], data: openArray[byte]): DataStream =
+proc new*(_: typedesc[Datastream], data: openArray[byte]): Datastream =
   var str = newStringOfCap(data.len)
   copyMem(addr str[0], unsafeAddr data[0], data.len)
-  result = DataStream.new(str)
+  result = Datastream.new(str)
 
-proc new*(_: typedesc[DataStream], cap: int = 0): DataStream =
-  result = DataStream.new(newStringOfCap(cap))
+proc new*(_: typedesc[Datastream], cap: int = 0): Datastream =
+  result = Datastream.new(newStringOfCap(cap))
 
 
-proc len*(dss: DataStream): int {.raises: [].} =
+proc len*(dss: Datastream): int {.raises: [].} =
   try:
     dss.getPosition()
   except CatchableError as exc:

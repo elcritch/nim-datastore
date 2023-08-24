@@ -11,7 +11,7 @@ export sqliteutils
 
 type
   BoundIdCol* = proc (): string {.closure, gcsafe, upraises: [].}
-  BoundDataCol* = proc (): DataStream {.closure, gcsafe, upraises: [].}
+  BoundDataCol* = proc (): Datastream {.closure, gcsafe, upraises: [].}
   BoundTimestampCol* = proc (): int64 {.closure, gcsafe, upraises: [].}
 
   # feels odd to use `void` for prepared statements corresponding to SELECT
@@ -20,7 +20,7 @@ type
   ContainsStmt* = SQLiteStmt[(string), void]
   DeleteStmt* = SQLiteStmt[(string), void]
   GetStmt* = SQLiteStmt[(string), void]
-  PutStmt* = SQLiteStmt[(string, DataStream, int64), void]
+  PutStmt* = SQLiteStmt[(string, Datastream, int64), void]
   QueryStmt* = SQLiteStmt[(string), void]
   BeginStmt* = NoParamsStmt
   EndStmt* = NoParamsStmt
@@ -163,7 +163,7 @@ proc dataCol*(
 
   checkColMetadata(s, index, DataColName)
 
-  return proc (): DataStream {.raises: [].} =
+  return proc (): Datastream {.raises: [].} =
     let
       i = index.cint
       blob = sqlite3_column_blob(s, i)
@@ -188,7 +188,7 @@ proc dataCol*(
       dataBytes = cast[ptr UncheckedArray[byte]](blob)
 
     try:
-      var res = DataStream.new(dataLen)
+      var res = Datastream.new(dataLen)
       res.write(toOpenArray(dataBytes, 0, dataLen - 1))
       return res
     except CatchableError as exc:

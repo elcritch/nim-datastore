@@ -12,7 +12,7 @@ suite "Datastore (base)":
     ds = Datastore()
 
   test "put":
-    expect Defect: discard ds.put(key, DataStream.new [1.byte])
+    expect Defect: discard ds.put(key, Datastream.new [1.byte])
 
   test "delete":
     expect Defect: discard ds.delete(key)

@@ -60,13 +60,13 @@ method delete*(self: SQLiteDatastore, keys: seq[Key]): Future[?!void] {.async.} 
 
   return success()
 
-method get*(self: SQLiteDatastore, key: Key): Future[?!DataStream] {.async.} =
+method get*(self: SQLiteDatastore, key: Key): Future[?!Datastream] {.async.} =
   # see comment in ./filesystem_datastore re: finer control of memory
   # allocation in `method get`, could apply here as well if bytes were read
   # incrementally with `sqlite3_blob_read`
 
   var
-    bytes: DataStream
+    bytes: Datastream
 
   proc onData(s: RawStmtPtr) =
     bytes = self.db.getDataCol()
@@ -80,7 +80,7 @@ method get*(self: SQLiteDatastore, key: Key): Future[?!DataStream] {.async.} =
 
   return success bytes
 
-method put*(self: SQLiteDatastore, key: Key, data: DataStream): Future[?!void] {.async.} =
+method put*(self: SQLiteDatastore, key: Key, data: Datastream): Future[?!void] {.async.} =
   return self.db.putStmt.exec((key.id, data, timestamp()))
 
 method put*(self: SQLiteDatastore, batch: seq[BatchEntry]): Future[?!void] {.async.} =
