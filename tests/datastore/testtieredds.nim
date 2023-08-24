@@ -14,8 +14,8 @@ import ./dscommontests
 
 suite "Test Basic Tired Datastore":
   let
-    bytes = "some bytes".toBytes
-    otherBytes = "some other bytes".toBytes
+    bytes = DataStream.new "some bytes"
+    otherBytes = DataStream.new "some other bytes"
     key = Key.init("a:b/c/d:e").get
     root = "tests" / "test_data"
     path = currentSourcePath() # get this file's name

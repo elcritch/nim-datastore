@@ -146,7 +146,7 @@ template queryTests*(ds: Datastore, extended = true) {.dirty.} =
       for i in 0..<100:
         let
           key = Key.init(key, Key.init("/" & $i).tryGet).tryGet
-          val = ("val " & $i).toBytes
+          val = DataStream.new("val " & $i)
 
         (await ds.put(key, val)).tryGet
 
@@ -169,7 +169,7 @@ template queryTests*(ds: Datastore, extended = true) {.dirty.} =
       for i in 0..<100:
         let
           key = Key.init(key, Key.init("/" & $i).tryGet).tryGet
-          val = ("val " & $i).toBytes
+          val = DataStream.new("val " & $i)
 
         (await ds.put(key, val)).tryGet
 
@@ -192,7 +192,7 @@ template queryTests*(ds: Datastore, extended = true) {.dirty.} =
       for i in 0..<100:
         let
           key = Key.init(key, Key.init("/" & $i).tryGet).tryGet
-          val = ("val " & $i).toBytes
+          val = DataStream.new("val " & $i)
 
         (await ds.put(key, val)).tryGet
 
@@ -207,7 +207,7 @@ template queryTests*(ds: Datastore, extended = true) {.dirty.} =
 
       for i in 0..<res.high:
         let
-          val = ("val " & $(i + 95)).toBytes
+          val = DataStream.new("val " & $(i + 95))
           key = Key.init(key, Key.init("/" & $(i + 95)).tryGet).tryGet
 
         check:
@@ -225,7 +225,7 @@ template queryTests*(ds: Datastore, extended = true) {.dirty.} =
       for i in 0..<100:
         let
           k = Key.init(key, Key.init("/" & $i).tryGet).tryGet
-          val = ("val " & $i).toBytes
+          val = DataStream.new("val " & $i)
 
         kvs.add((k.some, val))
         (await ds.put(k, val)).tryGet

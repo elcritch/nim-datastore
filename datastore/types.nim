@@ -49,4 +49,6 @@ proc len*(dss: DataStream): int {.raises: [].} =
 template toOpenArray*(dss: DataStream): auto =
   dss.data.toOpenArray(0, dss.len)
 
+template toString*(dss: DataStream): string =
+  dss.data
 

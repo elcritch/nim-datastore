@@ -41,9 +41,9 @@ suite "Test Basic FSDatastore":
 suite "Test Misc FSDatastore":
   let
     path = currentSourcePath() # get this file's name
-    basePath = "tests_data"
-    basePathAbs = path.parentDir / basePath
-    bytes = "some bytes".toBytes
+    basePath = DataStream.new "tests_data"
+    basePathAbs = path.parentDir / basePath.toString()
+    bytes = DataStream.new "some bytes"
 
   setup:
     removeDir(basePathAbs)
