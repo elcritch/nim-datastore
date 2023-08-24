@@ -189,18 +189,16 @@ method query*(
 
       let
         dataLen = sqlite3_column_bytes(s, QueryStmtDataCol)
+        bytes = cast[ptr UncheckedArray[byte]](blob.get)
         data = if blob.isSome:
-            @(
-              toOpenArray(cast[ptr UncheckedArray[byte]](blob.get),
-              0,
-              dataLen - 1))
+            DataStream.new(toOpenArray(bytes, 0, dataLen - 1))
           else:
-            @[]
+            DataStream.new()
 
       return success (key.some, data)
     of SQLITE_DONE:
       iter.finished = true
-      return success (Key.none, EmptyBytes)
+      return success (Key.none, DataStream.new())
     else:
       iter.finished = true
       return failure newException(DatastoreError, $sqlite3_errstr(v))
