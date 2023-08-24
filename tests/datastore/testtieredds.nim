@@ -44,7 +44,7 @@ suite "Test Basic Tired Datastore":
 suite "TieredDatastore":
   # assumes tests/test_all is run from project root, e.g. with `nimble test`
   let
-    bytes = @[1.byte, 2.byte, 3.byte]
+    bytes = DataStream.new [1.byte, 2.byte, 3.byte]
     key = Key.init("a:b/c/d:e").get
     root = "tests" / "test_data"
     path = currentSourcePath() # get this file's name
