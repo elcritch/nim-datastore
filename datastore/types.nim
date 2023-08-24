@@ -47,6 +47,6 @@ proc len*(dss: DataStream): int {.raises: [].} =
     raise (ref Defect)(msg: exc.msg)
 
 template toOpenArray*(dss: DataStream): auto =
-  dss.data.toOpenArray()
+  dss.data.toOpenArray(0, dss.len)
 
 

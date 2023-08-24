@@ -103,12 +103,12 @@ proc readFile*(self: FSDatastore, path: string): ?!DataStream =
       size = file.getFileSize
 
     var
-      # if file's too large for int, we have other issues?
       bytes = DataStream.new(size.int)
+      # if file's too large for int, we have other issues?
       read = 0
 
     while read < size:
-      read += file.readBytes(bytes.toOpenArray(), read, size)
+      read += file.readChars(bytes.toOpenArray(), read, size)
 
     if read < size:
       return failure $read & " bytes were read from " & path &
@@ -139,7 +139,7 @@ method put*(
 
   try:
     createDir(parentDir(path))
-    writeFile(path, data)
+    writeFile(path, data.data)
   except CatchableError as e:
     return failure e
 
