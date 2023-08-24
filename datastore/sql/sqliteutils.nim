@@ -3,6 +3,7 @@ import pkg/questionable/results
 import pkg/sqlite3_abi
 import pkg/upraises
 
+import ../types
 export sqlite3_abi
 
 # Adapted from:
@@ -51,6 +52,16 @@ proc bindParam(
       # must remain valid until then. SQLite will then manage the lifetime of
       # its private copy."
       sqlite3_bind_blob(s, n.cint, unsafeAddr val[0], val.len.cint,
+        SQLITE_TRANSIENT)
+    else:
+      sqlite3_bind_null(s, n.cint)
+  elif val is DataStream:
+    if val.len > 0:
+      # `SQLITE_TRANSIENT` "indicate[s] that the object is to be copied prior
+      # to the return from sqlite3_bind_*(). The object and pointer to it
+      # must remain valid until then. SQLite will then manage the lifetime of
+      # its private copy."
+      sqlite3_bind_blob(s, n.cint, unsafeAddr val.data[0], val.len.cint,
         SQLITE_TRANSIENT)
     else:
       sqlite3_bind_null(s, n.cint)

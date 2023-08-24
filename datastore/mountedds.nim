@@ -90,19 +90,17 @@ method delete*(
 
   return success()
 
-method get*(
-  self: MountedDatastore,
-  key: Key): Future[?!seq[byte]] {.async.} =
+method get*(self: MountedDatastore,
+            key: Key): Future[?!DataStream] {.async.} =
 
   without mounted =? self.dispatch(key), error:
     return failure(error)
 
   return await mounted.store.store.get(mounted.relative)
 
-method put*(
-  self: MountedDatastore,
-  key: Key,
-  data: seq[byte]): Future[?!void] {.async.} =
+method put*(self: MountedDatastore,
+            key: Key,
+            data: DataStream): Future[?!void] {.async.} =
 
   without mounted =? self.dispatch(key), error:
     return failure(error)

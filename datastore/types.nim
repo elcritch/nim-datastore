@@ -35,4 +35,11 @@ proc new*(x: typedesc[DataStream], data: sink string): DataStream =
 proc new*(_: typedesc[DataStream], cap: int = 0): DataStream =
   result = DataStream.new(newStringOfCap(cap))
 
-proc len*(dss: DataStream): int = dss.getPosition()
+proc len*(dss: DataStream): int {.raises: [].} =
+  try:
+    dss.getPosition()
+  except CatchableError as exc:
+    # TODO: temporary check
+    raise (ref Defect)(msg: exc.msg)
+
+
