@@ -32,8 +32,14 @@ proc new*(x: typedesc[DataStream], data: sink string): DataStream =
     result.peekDataImpl = ss.peekDataImpl
     result.writeDataImpl = ss.writeDataImpl
 
+proc new*(_: typedesc[DataStream], data: openArray[byte]): DataStream =
+  var str = newStringOfCap(data.len)
+  copyMem(addr str[0], unsafeAddr data[0], data.len)
+  result = DataStream.new(str)
+
 proc new*(_: typedesc[DataStream], cap: int = 0): DataStream =
   result = DataStream.new(newStringOfCap(cap))
+
 
 proc len*(dss: DataStream): int {.raises: [].} =
   try:
