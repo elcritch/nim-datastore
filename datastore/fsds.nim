@@ -108,7 +108,8 @@ proc readFile*(self: FSDatastore, path: string): ?!DataStream =
       read = 0
 
     while read < size:
-      read += file.readChars(bytes.toOpenArray(), read, size)
+      echo "read: ", read, " size: ", size, " bytes: ", bytes.data.len()
+      read += file.readBuffer(addr bytes.data[read], size - read)
 
     if read < size:
       return failure $read & " bytes were read from " & path &

@@ -23,8 +23,8 @@ suite "Test Basic Mounted Datastore":
     sqlKey = Key.init("/root/sql").tryGet
     fsKey = Key.init("/root/fs").tryGet
 
-    bytes = "some bytes".toBytes
-    otherBytes = "some other bytes".toBytes
+    bytes = DataStream.new "some bytes"
+    otherBytes = DataStream.new "some other bytes"
 
   var
     sql: SQLiteDatastore
