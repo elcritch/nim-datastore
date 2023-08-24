@@ -53,7 +53,13 @@ proc `==`*(a, b: DataStream): bool {.raises: [].} =
     return true
   if a.isNil or b.isNil:
     return false
-  return a.len == b.len and a.data == b.data
+  if a.len == 0 and b.len == 0:
+    return true
+  echo "== a: len: ", a.len, " data: ", a.data.repr
+  echo "== b: len: ", a.len, " data: ", a.data.repr
+  let res =  a.len == b.len and a.data == b.data
+  echo "== res: ", res
+  return res
 
 template toOpenArray*(dss: DataStream): auto =
   dss.data.toOpenArray(0, dss.len)

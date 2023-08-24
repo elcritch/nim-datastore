@@ -190,7 +190,8 @@ proc dataCol*(
     try:
       var res = DataStream.new(dataLen)
       echo "RES: ", res.data.len(), " dataLen: ", dataLen
-      res.write(toOpenArray(dataBytes, 0, dataLen - 1))
+      if dataLen > 0:
+        res.write(toOpenArray(dataBytes, 0, dataLen - 1))
       return res
     except CatchableError as exc:
       # TODO: temporary check
