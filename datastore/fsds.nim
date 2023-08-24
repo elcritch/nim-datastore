@@ -88,7 +88,7 @@ method delete*(self: FSDatastore, keys: seq[Key]): Future[?!void] {.async.} =
 
   return success()
 
-proc readFile*(self: FSDatastore, path: string): ?!seq[byte] =
+proc readFile*(self: FSDatastore, path: string): ?!DataStream =
   var
     file: File
 
@@ -103,7 +103,7 @@ proc readFile*(self: FSDatastore, path: string): ?!seq[byte] =
       size = file.getFileSize
 
     var
-      bytes = newSeq[byte](size)
+      bytes = DataStream.new(size)
       read = 0
 
     while read < size:
@@ -118,7 +118,7 @@ proc readFile*(self: FSDatastore, path: string): ?!seq[byte] =
   except CatchableError as e:
     return failure e
 
-method get*(self: FSDatastore, key: Key): Future[?!seq[byte]] {.async.} =
+method get*(self: FSDatastore, key: Key): Future[?!DataStream] {.async.} =
   without path =? self.path(key), error:
     return failure error
 
@@ -131,7 +131,7 @@ method get*(self: FSDatastore, key: Key): Future[?!seq[byte]] {.async.} =
 method put*(
   self: FSDatastore,
   key: Key,
-  data: seq[byte]): Future[?!void] {.async.} =
+  data: DataStream): Future[?!void] {.async.} =
 
   without path =? self.path(key), error:
     return failure error
@@ -194,7 +194,7 @@ method query*(
 
     if finished(walker):
       iter.finished = true
-      return success (Key.none, EmptyBytes)
+      return success (Key.none, Datastream.new(0))
 
     var
       keyPath = basePath
@@ -210,7 +210,7 @@ method query*(
           self.readFile((basePath / path).absolutePath)
             .expect("Should read file")
         else:
-          @[]
+          Datastream.new(0)
 
     return success (key.some, data)
 
