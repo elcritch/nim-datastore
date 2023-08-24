@@ -18,7 +18,7 @@ type
     offset*: int      # Offset from which to start querying - not available in all backends
     sort*: SortOrder  # Sort order - not available in all backends
 
-  QueryResponse* = tuple[key: ?Key, data: Datastream]
+  QueryResponse* = tuple[key: ?Key, data: DataStream]
   QueryEndedError* = object of DatastoreError
 
   GetNext* = proc(): Future[?!QueryResponse] {.upraises: [], gcsafe, closure.}

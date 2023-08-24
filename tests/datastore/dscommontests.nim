@@ -9,8 +9,8 @@ import pkg/datastore
 proc basicStoreTests*(
     ds: Datastore,
     key: Key,
-    bytes: Datastream,
-    otherBytes: Datastream
+    bytes: DataStream,
+    otherBytes: DataStream
 ) =
 
   test "put":
@@ -39,7 +39,7 @@ proc basicStoreTests*(
       batch: seq[BatchEntry]
 
     for k in 0..<100:
-      batch.add((Key.init(key.id, $k).tryGet, Datastream.new [k.byte]))
+      batch.add((Key.init(key.id, $k).tryGet, DataStream.new [k.byte]))
 
     (await ds.put(batch)).tryGet
 

@@ -55,7 +55,7 @@ proc bindParam(
         SQLITE_TRANSIENT)
     else:
       sqlite3_bind_null(s, n.cint)
-  elif val is Datastream:
+  elif val is DataStream:
     if val.len > 0:
       # `SQLITE_TRANSIENT` "indicate[s] that the object is to be copied prior
       # to the return from sqlite3_bind_*(). The object and pointer to it

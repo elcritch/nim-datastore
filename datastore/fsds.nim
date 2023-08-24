@@ -103,11 +103,12 @@ proc readFile*(self: FSDatastore, path: string): ?!DataStream =
       size = file.getFileSize
 
     var
-      bytes = DataStream.new(size)
+      # if file's too large for int, we have other issues?
+      bytes = DataStream.new(size.int)
       read = 0
 
     while read < size:
-      read += file.readBytes(bytes, read, size)
+      read += file.readBytes(bytes.toOpenArray(), read, size)
 
     if read < size:
       return failure $read & " bytes were read from " & path &
@@ -194,7 +195,7 @@ method query*(
 
     if finished(walker):
       iter.finished = true
-      return success (Key.none, Datastream.new(0))
+      return success (Key.none, DataStream.new(0))
 
     var
       keyPath = basePath
@@ -210,7 +211,7 @@ method query*(
           self.readFile((basePath / path).absolutePath)
             .expect("Should read file")
         else:
-          Datastream.new(0)
+          DataStream.new(0)
 
     return success (key.some, data)
 

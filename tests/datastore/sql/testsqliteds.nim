@@ -17,8 +17,8 @@ suite "Test Basic SQLiteDatastore":
   let
     ds = SQLiteDatastore.new(Memory).tryGet()
     key = Key.init("a:b/c/d:e").tryGet()
-    bytes = Datastream.new "some bytes"
-    otherBytes = Datastream.new "some other bytes"
+    bytes = DataStream.new "some bytes"
+    otherBytes = DataStream.new "some other bytes"
 
   teardownAll:
     (await ds.close()).tryGet()
@@ -33,7 +33,7 @@ suite "Test Read Only SQLiteDatastore":
     filename = "test_store" & DbExt
     dbPathAbs = basePathAbs / filename
     key = Key.init("a:b/c/d:e").tryGet()
-    bytes = Datastream.new "some bytes"
+    bytes = DataStream.new "some bytes"
 
   var
     dsDb: SQLiteDatastore

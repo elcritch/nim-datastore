@@ -19,8 +19,8 @@ suite "Test Basic FSDatastore":
     basePath = "tests_data"
     basePathAbs = path.parentDir / basePath
     key = Key.init("/a/b").tryGet()
-    bytes = Datastream.new "some bytes"
-    otherBytes = Datastream.new "some other bytes"
+    bytes = DataStream.new "some bytes"
+    otherBytes = DataStream.new "some other bytes"
 
   var
     fsStore: FSDatastore

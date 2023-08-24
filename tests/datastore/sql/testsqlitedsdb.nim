@@ -77,8 +77,8 @@ suite "Test SQLite Datastore DB operations":
     dbPathAbs = basePathAbs / filename
 
     key = Key.init("test/key").tryGet()
-    data = Datastream.new "some data"
-    otherData = Datastream.new "some other data"
+    data = DataStream.new "some data"
+    otherData = DataStream.new "some other data"
 
   var
     dsDb: SQLiteDsDb
@@ -114,7 +114,7 @@ suite "Test SQLite Datastore DB operations":
     let
       dataCol = dsDb.getDataCol
 
-    var bytes: Datastream
+    var bytes: DataStream
     proc onData(s: RawStmtPtr) =
       bytes = dataCol()
 
@@ -132,7 +132,7 @@ suite "Test SQLite Datastore DB operations":
     let
       dataCol = dsDb.getDataCol
 
-    var bytes: Datastream
+    var bytes: DataStream
     proc onData(s: RawStmtPtr) =
       bytes = dataCol()
 

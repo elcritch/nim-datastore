@@ -68,10 +68,10 @@ method delete*(
 
 method get*(
   self: TieredDatastore,
-  key: Key): Future[?!Datastream] {.async.} =
+  key: Key): Future[?!DataStream] {.async.} =
 
   var
-    bytes: Datastream
+    bytes: DataStream
 
   for store in self.stores:
     without bytes =? (await store.get(key)):
@@ -93,7 +93,7 @@ method get*(
 method put*(
   self: TieredDatastore,
   key: Key,
-  data: Datastream): Future[?!void] {.async.} =
+  data: DataStream): Future[?!void] {.async.} =
 
   let
     pending = await allFinished(self.stores.mapIt(it.put(key, data)))

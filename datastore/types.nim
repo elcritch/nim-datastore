@@ -10,10 +10,10 @@ type
 
   Datastore* = ref object of RootObj
 
-  Datastream* = ref object of StringStreamObj ##\
-    ## Datastream type -- currently just a shim around StringStream
+  DataStream* = ref object of StringStreamObj ##\
+    ## DataStream type -- currently just a shim around StringStream
 
-proc new*(x: typedesc[Datastream], data: sink string): Datastream =
+proc new*(x: typedesc[DataStream], data: sink string): DataStream =
   result.new()
   var ss = newStringStream()
   result.data = data
@@ -30,23 +30,23 @@ proc new*(x: typedesc[Datastream], data: sink string): Datastream =
     result.peekDataImpl = ss.peekDataImpl
     result.writeDataImpl = ss.writeDataImpl
 
-proc new*(_: typedesc[Datastream], data: seq[byte]): Datastream =
+proc new*(_: typedesc[DataStream], data: seq[byte]): DataStream =
   var str = newStringOfCap(data.len)
   copyMem(addr str[0], unsafeAddr data[0], data.len)
-  result = Datastream.new(str)
+  result = DataStream.new(str)
 
-proc new*(_: typedesc[Datastream], cap: int = 0): Datastream =
+proc new*(_: typedesc[DataStream], cap: int = 0): DataStream =
   var ss = newStringOfCap(cap)
-  result = Datastream.new(move ss)
+  result = DataStream.new(move ss)
 
-proc len*(dss: Datastream): int {.raises: [].} =
+proc len*(dss: DataStream): int {.raises: [].} =
   try:
     dss.getPosition()
   except CatchableError as exc:
     # TODO: temporary check
     raise (ref Defect)(msg: exc.msg)
 
+template toOpenArray*(dss: DataStream): auto =
+  dss.data.toOpenArray()
 
-const
-  EmptyBytes* = Datastream.new ""
 

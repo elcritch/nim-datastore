@@ -11,7 +11,7 @@ export key, query, types
 push: {.upraises: [].}
 
 type
-  BatchEntry* = tuple[key: Key, data: Datastream]
+  BatchEntry* = tuple[key: Key, data: DataStream]
 
 method has*(self: Datastore, key: Key): Future[?!bool] {.base, locks: "unknown".} =
   raiseAssert("Not implemented!")
@@ -22,10 +22,10 @@ method delete*(self: Datastore, key: Key): Future[?!void] {.base, locks: "unknow
 method delete*(self: Datastore, keys: seq[Key]): Future[?!void] {.base, locks: "unknown".} =
   raiseAssert("Not implemented!")
 
-method get*(self: Datastore, key: Key): Future[?!Datastream] {.base, locks: "unknown".} =
+method get*(self: Datastore, key: Key): Future[?!DataStream] {.base, locks: "unknown".} =
   raiseAssert("Not implemented!")
 
-method put*(self: Datastore, key: Key, data: Datastream): Future[?!void] {.base, locks: "unknown".} =
+method put*(self: Datastore, key: Key, data: DataStream): Future[?!void] {.base, locks: "unknown".} =
   raiseAssert("Not implemented!")
 
 method put*(self: Datastore, batch: seq[BatchEntry]): Future[?!void] {.base, locks: "unknown".} =

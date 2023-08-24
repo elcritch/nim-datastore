@@ -14,17 +14,17 @@ template queryTests*(ds: Datastore, extended = true) {.dirty.} =
     key1: Key
     key2: Key
     key3: Key
-    val1: Datastream
-    val2: Datastream
-    val3: Datastream
+    val1: DataStream
+    val2: DataStream
+    val3: DataStream
 
   setupAll:
     key1 = Key.init("/a").tryGet
     key2 = Key.init("/a/b").tryGet
     key3 = Key.init("/a/b/c").tryGet
-    val1 = Datastream.new "value for 1"
-    val2 = Datastream.new "value for 2"
-    val3 = Datastream.new "value for 3"
+    val1 = DataStream.new "value for 1"
+    val2 = DataStream.new "value for 2"
+    val3 = DataStream.new "value for 3"
 
   test "Key should query all keys and all it's children":
     let

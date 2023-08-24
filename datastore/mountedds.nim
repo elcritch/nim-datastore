@@ -91,7 +91,7 @@ method delete*(
   return success()
 
 method get*(self: MountedDatastore,
-            key: Key): Future[?!Datastream] {.async.} =
+            key: Key): Future[?!DataStream] {.async.} =
 
   without mounted =? self.dispatch(key), error:
     return failure(error)
@@ -100,7 +100,7 @@ method get*(self: MountedDatastore,
 
 method put*(self: MountedDatastore,
             key: Key,
-            data: Datastream): Future[?!void] {.async.} =
+            data: DataStream): Future[?!void] {.async.} =
 
   without mounted =? self.dispatch(key), error:
     return failure(error)
